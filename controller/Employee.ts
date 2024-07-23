@@ -64,6 +64,20 @@ class EmployeeController {
 			response: employee,
 		});
 	}
+
+	async deleteEmployee(req: Request, res: Response) {
+		const deleted = await service.deleteEmployee(req.body.id);
+		if (!deleted) {
+			return res.status(400).json({
+				code: 400,
+				response: deleted.response.msg,
+			});
+		}
+		return res.status(201).json({
+			code: 201,
+			response: deleted.response.msg,
+		});
+	}
 }
 
 export default EmployeeController;

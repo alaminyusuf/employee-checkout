@@ -7,7 +7,7 @@ class EmployeeService {
 
 		if (found) {
 			return {
-				error: true,
+				error: 400,
 				response: { msg: "That email already exist" },
 			};
 		}
@@ -22,7 +22,7 @@ class EmployeeService {
 		const employee = await Employee.findOne({ email });
 		if (employee) {
 			return {
-				code: false,
+				code: 200,
 				response: employee,
 			};
 		}
@@ -36,20 +36,26 @@ class EmployeeService {
 		const response = await Employee.findByIdAndUpdate(id, data);
 		if (response) {
 			return {
-				code: false,
+				code: 201,
 				response,
 			};
 		}
 		return {
-			code: true,
+			code: 400,
 			response: { msg: "Could not update" },
 		};
 	}
 
 	async deleteEmployee(id: string) {
-		await Employee.findByIdAndDelete(id);
+		const deleted = await Employee.findByIdAndDelete(id);
+		if (!deleted) {
+			return {
+				code: 400,
+				response: { msg: "User not found" },
+			};
+		}
 		return {
-			error: false,
+			code: 201,
 			response: { msg: "User deleted" },
 		};
 	}

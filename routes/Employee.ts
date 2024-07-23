@@ -14,8 +14,8 @@ router.post("/employees/register", (req: Request, res: Response) => {
 router.put("/employee/update", (req: Request, res: Response) => {
 	return controller.updateEmployee(req, res);
 });
-// router.delete("/employee/delete", (req: Request, res: Response) => {
-// 	return controller.delete(req, res);
-// });
+router.delete("/employee/delete", (req: Request, res: Response) => {
+	return controller.deleteEmployee(req, res);
+});
 
 export default router;
