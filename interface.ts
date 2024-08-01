@@ -6,11 +6,6 @@ export interface IEmployee {
 	level: string;
 }
 
-export type ApiError = {
-	code: number;
-	message: string;
-};
-
 export type IEmployees = {
 	code: number;
 	response: IEmployee[];
