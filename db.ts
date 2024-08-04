@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
+import "dotenv/config";
 
-// Using local server, will change after project completion #Top priority
-const mongoDB = "mongodb://127.0.0.1/_checkout-sever";
+const mongoDB = process.env.MONGO_URI;
 
 mongoose.connect(mongoDB);
 const conn = mongoose.connection;

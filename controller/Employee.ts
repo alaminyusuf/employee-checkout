@@ -2,16 +2,18 @@ import { Request, Response } from "express";
 import { IEmployee } from "../interface";
 import EmployeeService from "../service/Employee";
 import { fieldValidation } from "../util/validation";
+import * as argon2 from "argon2";
 
 const service = new EmployeeService();
 
 class EmployeeController {
 	async create(req: Request, res: Response) {
 		const { name, email, password, level, dept } = req.body;
+		const hashed = await argon2.hash(password);
 		const data: IEmployee = {
 			name,
 			email,
-			password,
+			password: hashed,
 			dept,
 			level,
 		};
