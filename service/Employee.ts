@@ -33,11 +33,11 @@ class EmployeeService {
 	}
 
 	async updateEmployee(id: string, data: any) {
-		const response = await Employee.findByIdAndUpdate(id, data);
+		const response = await Employee.findByIdAndUpdate({ _id: id }, data);
 		if (response) {
 			return {
 				code: 201,
-				response,
+				response: { msg: "Employee updated" },
 			};
 		}
 		return {

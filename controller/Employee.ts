@@ -34,36 +34,10 @@ class EmployeeController {
 	}
 
 	async updateEmployee(req: Request, res: Response) {
-		const { name, email, level, password, dept } = req.body;
-		const employee = await service.getSingleEmployee(req.body.id);
-		if (typeof name !== undefined) {
-			await service.updateEmployee(req.body.id, {
-				name,
-			});
-		}
-		if (typeof email !== undefined) {
-			await service.updateEmployee(req.body.id, {
-				email,
-			});
-		}
-		if (typeof level !== undefined) {
-			await service.updateEmployee(req.body.id, {
-				level,
-			});
-		}
-		if (typeof dept !== undefined) {
-			await service.updateEmployee(req.body.id, {
-				dept,
-			});
-		}
-		if (typeof password !== undefined) {
-			await service.updateEmployee(req.body.id, {
-				password,
-			});
-		}
+		const response = await service.updateEmployee(req.body.id, req.body);
 		return res.status(201).json({
-			code: 201,
-			response: employee,
+			code: response.code,
+			response: response.response.msg,
 		});
 	}
 
