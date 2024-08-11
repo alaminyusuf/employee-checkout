@@ -1,28 +1,12 @@
 import { Request, Response } from "express";
-import { IEmployee } from "../interface";
 import EmployeeService from "../service/Employee";
-import { fieldValidation } from "../util/validation";
-import * as argon2 from "argon2";
 
 const service = new EmployeeService();
 
 class EmployeeController {
 	async create(req: Request, res: Response) {
-		const { name, email, password, level, dept } = req.body;
-		const hashed = await argon2.hash(password);
-		const data: IEmployee = {
-			name,
-			email,
-			password: hashed,
-			dept,
-			level,
-		};
-		const err = fieldValidation(data);
-		if (err) {
-			return res.status(400).json({ err });
-		}
-		const response = await service.create(data);
-		return res.status(201).json({ response });
+		const response = await service.create(req.body);
+		return res.status(response.code).json({ response: response.response });
 	}
 
 	async getAllEmployees(_req: Request, res: Response) {

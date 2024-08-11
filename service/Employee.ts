@@ -1,8 +1,26 @@
 import Employee from "../model/Employee";
 import { IEmployee } from "../interface";
+import { fieldValidation } from "../util/validation";
+import * as argon2 from "argon2";
 
 class EmployeeService {
 	async create(data: IEmployee) {
+		const err = fieldValidation(data);
+		if (err) {
+			return {
+				err,
+			};
+		}
+
+		const { name, email, password, level, dept } = data;
+		const hashed = await argon2.hash(password);
+		const Idata: IEmployee = {
+			name,
+			email,
+			password: hashed,
+			dept,
+			level,
+		};
 		const found = await Employee.findOne({ email: data.email });
 
 		if (found) {
@@ -11,7 +29,7 @@ class EmployeeService {
 				response: { msg: "That email already exist" },
 			};
 		}
-		const employee = await Employee.create(data);
+		const employee = await Employee.create(Idata);
 		return {
 			code: 201,
 			response: employee,
