@@ -1,3 +1,4 @@
+import * as argon2 from "argon2";
 import Employee from "../model/Employee";
 
 class CheckoutService {
@@ -6,18 +7,28 @@ class CheckoutService {
 		if (!employee) {
 			return {
 				code: 401,
-				response: "UnAuthorized",
 			};
 		}
-		if (employee.dept !== dept) {
+		if (employee.dept !== dept.toUpperCase()) {
 			return {
 				code: 403,
-				response: "Invalid department",
+			};
+		}
+		return {
+			name: employee.name,
+			code: 200,
+		};
+	}
+	async athenticate(email: string, password: string) {
+		const employee = await Employee.findOne({ email });
+		const verified = await argon2.verify(employee.password, password);
+		if (!verified) {
+			return {
+				code: 400,
 			};
 		}
 		return {
 			code: 200,
-			response: `Welcome ${employee.name} to ${employee.dept}`,
 		};
 	}
 }
