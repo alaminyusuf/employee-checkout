@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+html
+  head
+    meta(charset='utf-8')
+    title=title
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css')
+  body
+    body
+  .modal-dialog
+    .modal-content
+      .modal-header
+        h4#myModalLabel.modal-title
+          | Employee Check
+      .modal-body
+        form(role='form' method='POST' action='/')
+          div.form-group
+            label(for='dept') Dept:
+            input.form-control(type='text', placeholder='Deptartment' name='dept')
+          div.form-group
+            label(for='email') Email:
+            input.form-control(type='email', placeholder='name@email.com' name='email')
+          button.btn.btn-primary(type="submit") Submit
+      .modal-footer
