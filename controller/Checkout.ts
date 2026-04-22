@@ -3,37 +3,37 @@ import CheckoutService from "../service/Checkout";
 
 const service = new CheckoutService();
 
+/**
+ * Controller for handling employee checkout and authentication requests.
+ */
 class CheckoutController {
+	/**
+	 * Handles the initial department access check.
+	 */
 	async check(req: Request, res: Response) {
 		const { email, dept } = req.body;
-		const { code, name } = await service.check(email, dept);
-		if (code == 200) {
-			req.session.user = { email, verified: false, name };
-			res.redirect(`/api/checkout`);
-		} else if (code == 401) {
-			res.statusCode = 401;
-			res.redirect("/");
-		} else {
-			res.statusCode = 403;
-			res.redirect("/");
-		}
+		const { name } = await service.check(email, dept);
+
+		req.session.user = { email, verified: false, name };
+		return res.redirect(`/api/checkout`);
 	}
+
+	/**
+	 * Handles the password authentication for the checkout.
+	 */
 	async authenticate(req: Request, res: Response) {
 		if (!req.session.user) {
-			res.redirect("/");
+			return res.redirect("/");
 		}
 		const { password } = req.body;
-		let email = req.session.user.email;
-		const { code } = await service.athenticate(email, password);
-		if (code == 400) {
-			res.redirect(`/`);
-		} else {
-			req.session.user.verified = true;
-			const name = req.session.user.name;
-			res.setHeader("Content-Type", "text/html");
-			res.write(`<h2>Hello ${name}</h2>`);
-			res.end();
-		}
+		const email = req.session.user.email;
+		await service.athenticate(email, password);
+
+		req.session.user.verified = true;
+		const name = req.session.user.name;
+		res.setHeader("Content-Type", "text/html");
+		res.write(`<h2>Hello ${name}</h2>`);
+		return res.end();
 	}
 }
 
